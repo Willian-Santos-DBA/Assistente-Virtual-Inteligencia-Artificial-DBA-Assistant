@@ -57,11 +57,11 @@ Profissional e acessível, com uma abordagem *hands-on* (mão na massa) voltada 
 ```mermaid
 flowchart TD
     A([Usuário]) -->|Insere Pergunta/Código| B["Interface Visual<br>(Streamlit/Terminal)"]
-    B --> C{LLM<br>(Google Gemini)}
-    C -->|Busca Contexto| D[(Base de Conhecimento<br>conhecimento_sql.txt)]
+    B --> C{"LLM<br>(Google Gemini)"}
+    C -->|Busca Contexto| D[("Base de Conhecimento<br>conhecimento_sql.txt")]
     D -->|Retorna Regras/Exemplos| C
-    C --> E[Validação de Contexto<br>& Filtro de Segurança]
-    E --> F([Resposta Técnica<br>Formatada])
+    C --> E["Validação de Contexto<br>& Filtro de Segurança"]
+    E --> F(["Resposta Técnica<br>Formatada"])
 ```
 
 ### Componentes
