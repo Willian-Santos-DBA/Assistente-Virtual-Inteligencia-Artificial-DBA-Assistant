@@ -1,0 +1,65 @@
+# BASE DE CONHECIMENTO DE BANCO DE DADOS - IA ASSISTENTE
+
+## 1. CONCEITOS FUNDAMENTAIS
+* Dado, Informação e Conhecimento: Dados são fatos brutos coletados que, isolados, não transmitem mensagem (ex: 9,5). A informação é o dado processado, estruturado e com contexto (ex: A nota do aluno foi 9,5). O conhecimento é gerado pela análise e cruzamento de informações para a tomada de decisões.
+* Banco de Dados: Coleção de dados persistentes, organizados e armazenados eletronicamente para uso em aplicações empresariais.
+* SGBD (Sistema Gerenciador de Banco de Dados): Conjunto de programas que atua como intermediário entre o usuário e o banco, gerenciando a estrutura, garantindo propriedades de consistência e controlando o acesso (ex: MySQL, PostgreSQL, Oracle, SQL Server).
+* Anomalias de Bancos Mal Modelados: Estruturas sem normalização sofrem com redundância, anomalias de inclusão (inserção forçada de dados repetidos), exclusão (perda acidental de dados úteis ao deletar um registro) e atualização (inconsistência ao alterar apenas parte dos dados replicados).
+
+## 2. ARQUITETURA E MODELAGEM DE DADOS
+* Bancos Relacionais vs Não Relacionais: Relacionais utilizam tabelas com forte integridade através de chaves (ex: MySQL). Não relacionais (NoSQL) focam em flexibilidade e alta escalabilidade em modelos como documentos (ex: MongoDB).
+* Modelo Conceitual: Foco no negócio, abstraindo tecnologias. Utiliza o Diagrama de Entidade-Relacionamento (DER) para mapear Entidades (objetos concretos/abstratos), Atributos (propriedades, que podem ser simples, compostas ou multivalorados) e Relacionamentos com Cardinalidade (1:1, 1:N, N:N).
+* Modelo Lógico: Tradução do conceitual para uma estrutura que o SGBD entende (tabelas, tuplas/linhas e colunas/atributos), aplicando regras de chaves primárias e chaves estrangeiras para conectar os dados.
+* Modelo Físico: Implementação estrutural no SGBD por meio de scripts de criação e restrições.
+
+## 3. REGRAS DE MAPEAMENTO (CONCEITUAL -> LÓGICO)
+* Entidades e Atributos: Entidades fortes tornam-se tabelas. Atributos compostos são desmembrados em colunas simples.
+* Entidades Fracas: Tornam-se tabelas onde a chave primária é uma composição de sua chave parcial com a chave estrangeira da entidade forte da qual dependem.
+* Atributos Multivalorados: Geram uma nova tabela separada, cuja chave primária é composta pelo próprio atributo junto com a chave estrangeira da tabela original.
+* Relacionamento 1:1: A chave primária de uma tabela vai como chave estrangeira para a outra, junto com os atributos do relacionamento.
+* Relacionamento 1:N: A chave primária do lado "1" é inserida como chave estrangeira na tabela do lado "N", carregando os atributos do relacionamento.
+* Relacionamento N:N: Cria-se uma nova tabela (tabela associativa) cuja chave primária é a composição das chaves estrangeiras das entidades relacionadas, incluindo também os atributos próprios do relacionamento.
+* Relacionamento Ternário: Produz uma nova relação contendo as chaves estrangeiras de todas as três entidades participantes.
+
+## 4. NORMALIZAÇÃO DE DADOS
+* Dependência Funcional: Relação onde um atributo (ou conjunto) determina de forma única outro atributo (A -> B). Suas regras incluem Separação, Acumulação e Transitividade.
+* Primeira Forma Normal (1FN): Exige que todos os atributos sejam atômicos (simples e indivisíveis). Grupos repetitivos ou atributos multivalorados devem ser extraídos para formar uma nova tabela junto com a chave da tabela original.
+* Segunda Forma Normal (2FN): A tabela deve estar na 1FN e todos os atributos não chave devem depender inteiramente da chave primária composta, e não apenas de uma parte dela. Se houver dependência parcial, os atributos devem ser separados em uma nova tabela.
+* Terceira Forma Normal (3FN): A tabela deve estar na 2FN e não possuir dependências transitivas (um atributo não chave dependendo de outro atributo não chave). Exemplo: O nome de um departamento dependendo do código do departamento, que por sua vez não é a chave primária da tabela de Empregados. A solução é criar uma tabela específica para a entidade referenciada indiretamente.
+
+## 5. CATEGORIAS DA LINGUAGEM SQL
+* DDL (Data Definition Language): Usada para gerenciar estruturas lógicas e físicas. Inclui CREATE, ALTER, DROP e TRUNCATE.
+* DML (Data Manipulation Language): Usada para modificar os dados armazenados. Inclui INSERT, UPDATE e DELETE.
+* DQL (Data Query Language): Usada para consultas e recuperação de dados. Comando principal: SELECT.
+* TCL (Transaction Control Language): Controle de transações para garantir segurança na manipulação (COMMIT, ROLLBACK, SAVEPOINT).
+* DCL (Data Control Language): Controle de acessos e permissões (GRANT, REVOKE).
+
+## 6. DDL E ESTRUTURAÇÃO FÍSICA
+* Schemas: Agrupamentos lógicos de objetos no nível da aplicação (ex: CREATE SCHEMA Empresa;).
+* Tabelas e Restrições (Constraints): Criação de tabelas definindo domínios de dados (ex: INT, VARCHAR, DECIMAL) e regras de integridade (ex: NOT NULL, UNIQUE).
+* Chaves e Integridade Referencial: Definição de PRIMARY KEY (identificador único) e FOREIGN KEY (vínculo entre tabelas). O uso de ações como ON DELETE RESTRICT e ON UPDATE NO ACTION garante que registros "filhos" não fiquem órfãos quando dados "pais" forem manipulados.
+
+## 7. DML E DQL (MANIPULAÇÃO E CONSULTAS BÁSICAS)
+* INSERT: Insere linhas em tabelas (ex: INSERT INTO tabela (col1, col2) VALUES (val1, val2);).
+* UPDATE e DELETE: Atualiza ou apaga registros baseados em regras estabelecidas pela cláusula WHERE.
+* SELECT Básico: Recupera dados de colunas (SELECT col1, col2) ou de todas as colunas (SELECT *).
+* WHERE: Filtra dados usando operadores lógicos (AND, OR, NOT), de comparação (=, >, <), BETWEEN (intervalos), e IN (lista de valores).
+* ORDER BY: Ordena os resultados com base em colunas específicas (ASC para crescente, DESC para decrescente).
+* Consultas Multi-tabelas (Join Implícito): Cruzamento de dados na cláusula WHERE associando as chaves. Exemplo: SELECT c.nome, a.valor FROM Cliente c, Atendimento a WHERE c.cpf = a.fk_cliente_cpf;
+
+## 8. JUNÇÕES E AGREGAÇÕES AVANÇADAS
+* INNER JOIN, LEFT JOIN, RIGHT JOIN: Comandos explícitos de junção para combinar tabelas baseados em correspondência total ou priorizando registros da tabela à esquerda/direita (retornando NULL se ausentes).
+* GROUP BY e Agregações: Agrupa resultados similares e aplica cálculos de sumarização como SUM(), AVG(), COUNT(), MAX() e MIN().
+
+## 9. OBJETOS DE PROGRAMAÇÃO E OTIMIZAÇÃO
+* Views, Subqueries, Procedures e Functions: Views são consultas salvas como tabelas virtuais; Subqueries são consultas aninhadas; Procedures são blocos lógicos executáveis; e Functions são rotinas de cálculo que retornam escalares.
+* Otimização: Uso de índices (simples ou compostos) em colunas frequentemente acessadas, alinhados com análises da árvore de execução (EXPLAIN) e configurações de memória/cache do servidor.
+
+## 10. APLICAÇÃO PRÁTICA: O FLUXO DE DESENVOLVIMENTO
+* O desenvolvimento profissional segue um fluxo linear e contínuo:
+    1. Levantamento de requisitos do negócio.
+    2. Construção do Diagrama Entidade-Relacionamento (Mapeamento Conceitual).
+    3. Normalização das entidades para eliminar redundâncias e derivar as tabelas cruzadas (Mapeamento Lógico).
+    4. Implementação em SQL usando CREATE TABLE, estabelecendo PRIMARY KEY e vinculando entidades via FOREIGN KEY (Modelo Físico).
+    5. Carga de dados via INSERT INTO.
+    6. Validação do fluxo por meio de queries SELECT envolvendo junções entre tabelas de domínio e tabelas associativas.
