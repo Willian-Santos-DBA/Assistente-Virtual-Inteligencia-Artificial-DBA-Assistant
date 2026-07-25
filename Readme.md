@@ -30,5 +30,6 @@ Diferente de assistentes genéricos, o DBA Mentor foi desenhado com regras rigor
 
 # 🎥 Pitch de Apresentação
 
-Para entender a dor que o assistente resolve e ver o racional por trás deste agente, gravei um vídeo de apresentação (Pitch):
-👉 [Assista aqui ao vídeo de apresentação do Projeto](SEU_LINK_DO_VIDEO_AQUI)
+Para entender a dor que o assistente resolve e ver o racional por trás deste agente, gravei um vídeo de apresentação (Pitch) 
+
+👉 (https://www.youtube.com/watch?v=vNAcgPA7oIQ)
